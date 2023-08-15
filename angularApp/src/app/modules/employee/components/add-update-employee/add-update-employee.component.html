@@ -1,0 +1,73 @@
+<div class="flex flex-column" [formGroup]="employeeForm">
+    <div class="flex flex-column mb-2">
+        <label for="name">Name</label>
+        <input pInputText id="name" type="text" formControlName="name" />
+        <div *ngIf="name.invalid && name.touched">
+            <div *ngIf="name.errors?.['required']">name is required</div>
+            <div *ngIf="name.errors?.['pattern']">enter a valid name</div>
+        </div>
+    </div>
+    <div class="flex flex-column mb-2">
+        <label for="email">Email</label>
+        <span class="p-input-icon-right">
+            <i *ngIf="email.pending" class="pi pi-spin pi-spinner"></i>
+            <input pInputText id="email" type="text" formControlName="email" style="width: 100%;" />
+        </span>
+        <div *ngIf="email.invalid && email.touched">
+            <div *ngIf="email.errors?.['required']">Email is required</div>
+            <div *ngIf="email.errors?.['email']">enter a valid email</div>
+            <div *ngIf="email.errors?.['emailExists']">This email already exists in the database.</div>
+        </div>
+    </div>
+    <div class="flex flex-column mb-2">
+        <label for="password">Password</label>
+        <input pInputText id="pass" type="password" formControlName="password" />
+        <div *ngIf="password.invalid && password.touched">
+            <div *ngIf="password.errors?.['required']">Password number is required</div>
+            <div *ngIf="password.errors?.['minlength']">Password min Length is (6)</div>
+        </div>
+    </div>
+    <div class="flex flex-column mb-2">
+        <label for="password">Cofirm Password</label>
+        <input pInputText id="confirmpass" type="password" formControlName="confirmpassword" />
+        <div *ngIf="confirmpassword.invalid && confirmpassword.touched">
+            <div *ngIf="confirmpassword.errors?.['required']">Confirm Password number is required</div>
+        </div>
+        <div>
+            <div *ngIf="employeeForm.errors?.['mismatch']">Password Didn't Match</div>
+        </div>
+    </div>
+    <div class="flex flex-column mb-2">
+        <label for="phone">Phone Number</label>
+        <input pInputText id="phone" type="text" formControlName="phone" />
+        <div *ngIf="phone.invalid && phone.touched">
+            <div *ngIf="phone.errors?.['required']">Phone number is required</div>
+            <div *ngIf="phone.errors?.['pattern']">enter a valid phone number (10 digits) </div>
+        </div>
+    </div>
+
+    <div class="flex flex-column mb-2">
+        <label for="salary">Salary</label>
+        <p-inputNumber inputId="salary" formControlName="salary" [style]="{'width':'100%'}" mode="currency"
+            currency="USD" locale="en-US" [minFractionDigits]="0" [maxFractionDigits]="2" />
+        <div *ngIf="salary.invalid && salary.touched">
+            <div *ngIf="salary.errors?.['required']">Salary is required</div>
+            <div *ngIf="salary.errors?.['pattern']">Please enter a valid salary (integr)</div>
+        </div>
+    </div>
+    <div class="flex flex-column mb-2">
+        <label for="department">Department</label>
+        <p-dropdown [options]="departmentsDropList" optionLabel="name" optionValue="name" formControlName="department"
+            appendTo="body" placeholder="Department" [showClear]="true" [style]="{'width':'100%'}" ></p-dropdown>
+    </div>
+</div>
+<div class="flex justify-content-end">
+    <p-button *ngIf="selectedEmployee" [disabled]="employeeForm.invalid || employeeForm.pending" [loading]="loadingFormDialog"
+    label="Update" styleClass="p-button-rounded" icon="pi pi-user-edit"  (onClick)="updateEmployee()"></p-button>
+    
+    <p-button *ngIf="!selectedEmployee" [disabled]="employeeForm.invalid || employeeForm.pending" [loading]="loadingFormDialog"
+    label="ADD" styleClass="p-button-rounded p-button-success" icon="pi pi-plus" class="ml-2" (onClick)="addEmployee()"></p-button>
+
+    <p-button (onClick)="onClickCancelDialogBtn()"
+    label="Cancel" styleClass="p-button-rounded p-button-warning" icon="pi pi-times" class="ml-2"></p-button>
+</div>

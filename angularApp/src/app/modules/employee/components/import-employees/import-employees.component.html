@@ -1,0 +1,57 @@
+<div class="flex justify-content-center">
+    <div *ngIf="!file">
+        <p-fileUpload #uploadbtn mode="basic" accept=".csv,.xlsx,.xls" [maxFileSize]="10485760" [fileLimit]="1"
+            chooseLabel="Browse" uploadIcon="pi pi-check" [showCancelButton]="true" (onSelect)="onSelectFile($event)"
+            styleClass="p-button-sm p-button-outlined" class="mr-2">
+        </p-fileUpload>
+    </div>
+</div>
+
+<div *ngIf="file">
+    <div class="w-full flex justify-content-center">
+        {{errors}}
+    </div>
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="All Data" icon="pi pi-users" class="p-button-success mr-2"
+                (click)="showAllData()"></button>
+            <button pButton pRipple label="Ivnalid Data" icon="pi pi-bell" class="p-button-warning mr-2"
+                (click)="showInvalidData()"></button>
+            <button pButton pRipple label="Remove Invalid" icon="pi pi-times" class="p-button-danger mr-2"
+                (click)="deleteInvalidData()"></button>
+        </ng-template>
+        <ng-template pTemplate="right">
+            <p-button mode="basic" label="Import" chooseLabel="Import" icon="pi pi-verified"
+                class="mr-2 inline-block"></p-button>
+            <button pButton pRipple label="Discard" icon="pi pi-ban" class="p-button-help"
+                (click)="discardFile()"></button>
+
+        </ng-template>
+    </p-toolbar>
+
+    <p-table [value]="data">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let header of headers; let i = index">
+                    {{ header }}
+                </th>
+            </tr>
+            <tr>
+                <th *ngFor="let header of headers; let i = index">
+                    <p-dropdown [options]="columnsOptions" [(ngModel)]="headersTypes[i]" optionLabel="name"
+                        optionValue="name" placeholder="Column" [showClear]="true" appendTo="body"
+                        onchange="validateData()"></p-dropdown>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+            <tr>
+                <td *ngFor="let col of rowData">
+                    {{ col }}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+
+</div>
